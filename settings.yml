@@ -62,6 +62,5 @@ system:
   ports:
     http:
       AKAUNTING_PORT
-    others:
-      
+
 

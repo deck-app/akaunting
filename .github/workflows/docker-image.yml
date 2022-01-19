@@ -1,0 +1,45 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Symfony:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the image with php 8.0 symfony 6 and nginx
+        run: docker-compose build
+        env:
+          PHP_VERSION: "8.0"
+          BACK_END: nginx
+          SYMFONY_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 7.4 symfony 5 and nginx
+        run: docker-compose build
+        env:
+          PHP_VERSION: "7.4"
+          BACK_END: nginx
+          SYMFONY_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.0 symfony 6 and apache
+        run: docker-compose build
+        env:
+          PHP_VERSION: "8.0"
+          BACK_END: apache
+          SYMFONY_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 7.4 symfony 5 and apache
+        run: docker-compose build
+        env:
+          PHP_VERSION: "7.4"
+          BACK_END: apache
+          SYMFONY_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true

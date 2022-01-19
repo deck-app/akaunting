@@ -1,30 +1,55 @@
 #User defined
 user:
-  # php_version:
-  #   label:
-  #     PHP version
-  #   hint:
-  #     Select a PHP version from the list above
-  #   type:
-  #     select
-  #   values:
-  #     - 5.6
-  #     - "7.0"
-  #     - 7.1
-  #     - 7.2
-  #     - 7.3
-  #     - 7.4
-  #   target:
-  #     PHP_VERSION
+  back_end:
+    label:
+      Backend
+    hint:
+      Select a backend from the list above
+    type:
+      select
+    values:
+      - apache
+      - nginx
+    target:
+      BACK_END
+  php_version:
+    label:
+      PHP version
+    hint:
+      Select a PHP version from the list above
+    type:
+      select
+    values:
+      - 7.4
+      - "8.0"
+    target:
+      PHP_VERSION
 
-  # php_error_reporting:
-  #   label:
-  #     Enable PHP error reporting?
-  #   type:
-  #     checkbox
-  #   hint: Check the box to display PHP errors 
-  #   target:
-  #     DISPLAY_PHPERROR
+  php_error_reporting:
+    label:
+      Enable PHP error reporting?
+    type:
+      checkbox
+    hint: Check the box to display PHP errors 
+    target:
+      DISPLAY_PHPERROR
+  php_xdebug:
+    label:
+      Enable PHP extension XDEBUG?
+    type:
+      checkbox
+    hint: Check the box to display extension xdebug
+    target:
+      XDEBUG
+  SYMFONY_install:
+    label:
+      DO NOT install symfony
+    type:
+      checkbox
+    hint: Incase you have a symfony project already installed at the selected path
+    target:
+      SYMFONY_INSTALL
+    
   # mysql_version:
   #   label:
   #     MySQL version
@@ -46,9 +71,9 @@ user:
   #   values:
   #     /var/www
   #   hint:
-  #     Server document root, make sure to append "/public" if you are going to install a framework like Laravel
+  #     Server document root
   #   target:
-  #     SERVER_ROOT
+      # SERVER_ROOT
 
 #System defaults
 system:
@@ -61,6 +86,4 @@ system:
   #Generate public ports for the docker image
   ports:
     http:
-      AKAUNTING_PORT
-
-
+      SYMFONY_HOST_HTTP_PORT

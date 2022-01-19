@@ -1,0 +1,49 @@
+FROM ghcr.io/deck-app/nginx:v7.4
+LABEL maintainer Naba Das <hello@get-deck.com>
+
+# Persistent runtime dependencies
+# Example RUN apk add --no-cache php7-openssl php7-sysvmsg php7-curl
+
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /app/default.conf
+RUN wget -O /var/preview/index.html https://raw.githubusercontent.com/deck-app/stack-preview-screen/main/install/index.html
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/nginx/conf.d/default.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/#g" /app/default.conf
+RUN apk add --no-cache zip git rsync
+RUN apk add php7-pdo php7-zip php7-tokenizer php7-openssl php7-pdo_mysql
+
+
+WORKDIR /var/www
+#PHP display error enable or disable
+ARG PHP_VERSION
+COPY php_ini/php${PHP_VERSION}.ini /etc/php7/php.ini
+ARG DISPLAY_PHPERROR
+RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
+sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
+;else \
+sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
+;fi
+
+#Xdebug enable or disable
+ARG XDEBUG
+RUN if [ ${XDEBUG} = true ]; then \
+apk add php7-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php7/php.ini \
+;fi
+
+RUN \
+ echo "**** install akaunting ****" && \
+ curl -O -J -L https://akaunting.com/download.php?version=latest && \
+ mkdir -p /app/akaunting && \
+ unzip Akaunting_*.zip -d /app/akaunting/
+COPY app.env /app/akaunting/.env
+RUN sed -i "s#{DB_NAME}#${DB_NAME}#g" /app/akaunting/.env
+RUN sed -i "s#{DB_USER}#${DB_USER}#g" /app/akaunting/.env
+RUN sed -i "s#{DB_PASSWORD}#${DB_PASSWORD}#g" /app/akaunting/.env
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper

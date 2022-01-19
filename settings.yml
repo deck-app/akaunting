@@ -12,18 +12,6 @@ user:
       - nginx
     target:
       BACK_END
-  php_version:
-    label:
-      PHP version
-    hint:
-      Select a PHP version from the list above
-    type:
-      select
-    values:
-      - 7.4
-      - "8.0"
-    target:
-      PHP_VERSION
 
   php_error_reporting:
     label:
@@ -41,14 +29,6 @@ user:
     hint: Check the box to display extension xdebug
     target:
       XDEBUG
-  SYMFONY_install:
-    label:
-      DO NOT install symfony
-    type:
-      checkbox
-    hint: Incase you have a symfony project already installed at the selected path
-    target:
-      SYMFONY_INSTALL
     
   # mysql_version:
   #   label:
@@ -81,9 +61,9 @@ system:
     true
   #For collecting and storing DB in .env
   #db/user/password
-  # db_credentials:
-  #   true
+  db_credentials:
+    true
   #Generate public ports for the docker image
   ports:
     http:
-      SYMFONY_HOST_HTTP_PORT
+      AKAUNTING_HOST_HTTP_PORT

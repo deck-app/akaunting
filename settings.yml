@@ -52,12 +52,12 @@ user:
 
 #System defaults
 system:
-  show_localpath_selector:
-    true
+  # show_localpath_selector:
+  #   true
   #For collecting and storing DB in .env
   #db/user/password
-  # db_credentials:
-  #   true
+  db_credentials:
+    true
   #Generate public ports for the docker image
   ports:
     http:
